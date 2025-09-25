@@ -15,3 +15,21 @@ jobs:
       - run: npm ci
       - name: Run unit test case
         run: npm run test
+
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - run: npm ci
+      - name: Build react project
+        run: npm run build
+      - name: Extracting the tar file
+        run: tar -cvzf "react-app-for-azure-devops.tgz" -C "./build/dist" .
+      - name: Archive Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-app-for-azure-devops
+          path: react-app-for-azure-devops.tgz
