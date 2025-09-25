@@ -1,0 +1,33 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main 
+jobs:
+  lint:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm ci
+      - name: Running linting
+        run: npm run lint
+ 
+  unit-test:
+    needs: lint
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NTTDSP_ACCESS_TOKEN }}
+      - name: Run unit test case
+        run: npm run test
