@@ -17,6 +17,7 @@ jobs:
         run: npm run test
 
   build:
+    needs: unit-test
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
