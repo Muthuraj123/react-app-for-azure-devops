@@ -27,10 +27,3 @@ jobs:
       - run: npm ci
       - name: Build react project
         run: npm run build
-      - name: Extracting the tar file
-        run: tar -cvzf "react-app-for-azure-devops.tgz" -C "./build/dist" .
-      - name: Archive Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-app-for-azure-devops
-          path: react-app-for-azure-devops.tgz
